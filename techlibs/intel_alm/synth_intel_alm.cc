@@ -183,6 +183,7 @@ struct SynthIntelALMPass : public ScriptPass {
 			run(stringf("read_verilog -specify -lib -D %s +/intel_alm/common/dff_sim.v", family_opt.c_str()));
 			run(stringf("read_verilog -specify -lib -D %s +/intel_alm/common/dsp_sim.v", family_opt.c_str()));
 			run(stringf("read_verilog -specify -lib -D %s +/intel_alm/common/mem_sim.v", family_opt.c_str()));
+			run(stringf("read_verilog -specify -lib -D %s +/intel_alm/common/misc_sim.v", family_opt.c_str()));
 			run(stringf("read_verilog -specify -lib -D %s -icells +/intel_alm/common/abc9_model.v", family_opt.c_str()));
 
 			// Misc and common cells
@@ -231,7 +232,11 @@ struct SynthIntelALMPass : public ScriptPass {
 				}
 			}
 			run("alumacc");
-			run("techmap -map +/intel_alm/common/arith_alm_map.v -map +/intel_alm/common/dsp_map.v");
+
+			run("iopadmap -bits -outpad MISTRAL_OB I:PAD -inpad MISTRAL_IB O:PAD A:top");
+
+			//run("techmap -map +/intel_alm/common/arith_alm_map.v -map +/intel_alm/common/dsp_map.v");
+			run("techmap -map +/intel_alm/common/arith_alm_map.v");
 			run("opt");
 			run("memory -nomap");
 			run("opt_clean");
@@ -258,6 +263,7 @@ struct SynthIntelALMPass : public ScriptPass {
 			run("techmap -map +/intel_alm/common/dff_map.v");
 			run("opt -full -undriven -mux_undef");
 			run("clean -purge");
+			run("clkbufmap -buf MISTRAL_CLKENA Q:A");
 		}
 
 		if (check_label("map_luts")) {
