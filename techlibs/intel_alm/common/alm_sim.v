@@ -230,8 +230,8 @@ assign Q = ~A;
 
 endmodule
 
-(* abc9_box, lib_whitebox *)
-module MISTRAL_ALUT_ARITH(input A, B, C, D0, D1, (* abc9_carry *) input CI, output SO, (* abc9_carry *) output CO);
+//(* abc9_box, lib_whitebox *)
+module MISTRAL_ALUT_ARITH(input A, B, C, D0, D1, /*(* abc9_carry *)*/ input CI, output SO, /*(* abc9_carry *)*/ output CO);
 
 parameter LUT0 = 16'h0000;
 parameter LUT1 = 16'h0000;
